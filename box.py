@@ -69,7 +69,7 @@ ranks = [
 ]
 
 # Generate difficulty levels
-difficulties = [Decimal(str(round(8.0 + i * 0.1, 1))) for i in range(71)]
+difficulties = [Decimal(f"{8 + i // 10}.{i % 10}") for i in range(71)]
 
 # Prepare data for seaborn
 data = []
@@ -126,6 +126,12 @@ rating_lines = [
     {"y": 300, "label": "w5"},
     {"y": 320, "label": "w6"},
 ]
+
+for diff in difficulties:
+    if (diff * 2).as_integer_ratio()[1] == 1:
+        d = int((diff - 8) / Decimal("0.5") * 5)
+        ax.axvline(x=d, color="gray", linestyle="--", alpha=0.3)
+
 for line in rating_lines:
     ax.axhline(y=line["y"], color="gray", linestyle="--", alpha=0.3)
     # Place label outside the plot on the right

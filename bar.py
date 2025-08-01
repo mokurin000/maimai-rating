@@ -68,11 +68,11 @@ ranks = [
 ]
 
 # Generate difficulty levels
-difficulties = [Decimal(str(round(8.0 + i * 0.1, 1))) for i in range(71)]
+difficulties_dec = [Decimal(f"{8 + i // 10}.{i % 10}") for i in range(71)]
 
 # Prepare data for seaborn
 data = []
-for diff in difficulties:
+for diff in difficulties_dec:
     for rank in ranks:
         min_rating = dx_rating(diff, rank["min_ach"])
         max_rating = dx_rating(diff, rank["max_ach"])
@@ -117,7 +117,7 @@ df_grouped.columns = ["Difficulty", "Rank", "Min", "Max"]
 fig, ax = plt.subplots(figsize=(16, 8))
 
 # Get unique difficulties and assign x-positions
-difficulties = df_grouped["Difficulty"].unique()
+difficulties= df_grouped["Difficulty"].unique()
 x_pos = range(len(difficulties))
 
 # Plot bars for each rank at each difficulty
@@ -136,9 +136,13 @@ ax.set_ylabel("DX Rating")
 ax.set_title("DX Ratings by Difficulty and Rank")
 ax.legend(title="Rank")
 
-# Optional: Add reference lines if present in original code (adjust values as needed)
 for rating in [15000, 14000, 13000, 12000, 11000, 10000]:
     ax.axhline(rating // 50, color="gray", linestyle="--", alpha=0.3)
+
+for diff in difficulties_dec:
+    if (diff * 2).as_integer_ratio()[1] == 1:
+        d = int((diff - 8) / Decimal("0.5") * 5)
+        ax.axvline(x=d, color="gray", linestyle="--", alpha=0.3)
 
 plt.tight_layout()
 plt.show()
