@@ -1,4 +1,3 @@
-import seaborn as sns
 import matplotlib.pyplot as plt
 from decimal import Decimal, getcontext
 import pandas as pd
@@ -105,49 +104,41 @@ for diff in difficulties:
 
 # Convert to DataFrame
 df = pd.DataFrame(data)
+df["Difficulty"] = df["Difficulty"].astype(float)
 
-# Create figure with extra space on the right
-plt.figure(figsize=(16, 8))
-ax = sns.boxplot(
-    x="Difficulty",
-    y="Rating",
-    hue="Rank",
-    data=df[df["Type"].isin(["Min", "Max"])],
-    dodge=False,  # Disable dodging to place all ranks on the same vertical line
+# Assuming df is your original DataFrame with "Difficulty", "Rank", "Type", and "Rating"
+# Group data to get min and max ratings for each Difficulty and Rank
+df_grouped = (
+    df.groupby(["Difficulty", "Rank"]).agg({"Rating": ["min", "max"]}).reset_index()
 )
+df_grouped.columns = ["Difficulty", "Rank", "Min", "Max"]
 
-# Add horizontal reference lines
-reference_lines = [
-    {"y": 200, "label": "w0"},
-    {"y": 220, "label": "w1"},
-    {"y": 240, "label": "w2"},
-    {"y": 260, "label": "w3"},
-    {"y": 280, "label": "w4"},
-    {"y": 300, "label": "w5"},
-    {"y": 320, "label": "w6"},
-]
-for line in reference_lines:
-    ax.axhline(y=line["y"], color="gray", linestyle="--", alpha=0.7)
-    # Place label outside the plot on the right
-    ax.text(
-        1.02,  # x position in axes fraction (just outside the plot)
-        line["y"],
-        line["label"],
-        transform=ax.get_yaxis_transform(),  # Use y-axis data coordinates
-        ha="left",  # Align left to avoid overlap with plot
-        va="center",  # Center vertically with the line
-        fontsize=10,
-    )
+# Create figure and axes
+fig, ax = plt.subplots(figsize=(16, 8))
 
-plt.title("DX Rating Distribution by Difficulty and Rank")
-plt.xlabel("Difficulty")
-plt.ylabel("DX Rating")
-plt.xticks(
-    rotation=45,
-    ticks=range(0, len(difficulties), 5),
-    labels=[str(diff) for diff in difficulties[::5]],
-)
-plt.legend(title="Rank", loc="upper left")
-# Adjust layout to ensure labels are visible
-plt.subplots_adjust(right=0.90)  # Leave space on the right for labels
+# Get unique difficulties and assign x-positions
+difficulties = df_grouped["Difficulty"].unique()
+x_pos = range(len(difficulties))
+
+# Plot bars for each rank at each difficulty
+for rank in df_grouped["Rank"].unique():
+    rank_data = df_grouped[df_grouped["Rank"] == rank]
+    min_ratings = rank_data["Min"]
+    max_ratings = rank_data["Max"]
+    heights = max_ratings - min_ratings
+    ax.bar(x_pos, heights, bottom=min_ratings, label=rank, alpha=0.5, width=0.8)
+
+# Customize plot
+ax.set_xticks(x_pos[::5])  # Show every 5th tick for readability
+ax.set_xticklabels(difficulties[::5], rotation=45)
+ax.set_xlabel("Difficulty")
+ax.set_ylabel("DX Rating")
+ax.set_title("DX Ratings by Difficulty and Rank")
+ax.legend(title="Rank")
+
+# Optional: Add reference lines if present in original code (adjust values as needed)
+for rating in [15000, 14000, 13000, 12000, 11000, 10000]:
+    ax.axhline(rating // 50, color="gray", linestyle="--", alpha=0.3)
+
+plt.tight_layout()
 plt.show()
