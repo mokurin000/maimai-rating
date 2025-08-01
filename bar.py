@@ -68,7 +68,7 @@ ranks = [
 ]
 
 # Generate difficulty levels
-difficulties_dec = [Decimal(f"{8 + i // 10}.{i % 10}") for i in range(71)]
+difficulties_dec = [Decimal(f"{9 + i // 10}.{i % 10}") for i in range(61)]
 
 # Prepare data for seaborn
 data = []
@@ -117,7 +117,7 @@ df_grouped.columns = ["Difficulty", "Rank", "Min", "Max"]
 fig, ax = plt.subplots(figsize=(16, 8))
 
 # Get unique difficulties and assign x-positions
-difficulties= df_grouped["Difficulty"].unique()
+difficulties = df_grouped["Difficulty"].unique()
 x_pos = range(len(difficulties))
 
 # Plot bars for each rank at each difficulty
@@ -136,12 +136,33 @@ ax.set_ylabel("DX Rating")
 ax.set_title("DX Ratings by Difficulty and Rank")
 ax.legend(title="Rank")
 
-for rating in [15000, 14000, 13000, 12000, 11000, 10000]:
-    ax.axhline(rating // 50, color="gray", linestyle="--", alpha=0.3)
+# Add horizontal reference lines
+rating_lines = [
+    {"y": 200, "label": "w0"},
+    {"y": 220, "label": "w1"},
+    {"y": 240, "label": "w2"},
+    {"y": 260, "label": "w3"},
+    {"y": 280, "label": "w4"},
+    {"y": 300, "label": "w5"},
+    {"y": 320, "label": "w6"},
+]
+for line in rating_lines:
+    ax.axhline(y=line["y"], color="gray", linestyle="--", alpha=0.3)
+    # Place label outside the plot on the right
+    ax.text(
+        1.02,  # x position in axes fraction (just outside the plot)
+        line["y"],
+        line["label"],
+        transform=ax.get_yaxis_transform(),  # Use y-axis data coordinates
+        ha="left",  # Align left to avoid overlap with plot
+        va="center",  # Center vertically with the line
+        fontsize=10,
+    )
+
 
 for diff in difficulties_dec:
     if (diff * 2).as_integer_ratio()[1] == 1:
-        d = int((diff - 8) / Decimal("0.5") * 5)
+        d = int((diff - 9) / Decimal("0.5") * 5)
         ax.axvline(x=d, color="gray", linestyle="--", alpha=0.3)
 
 plt.tight_layout()
