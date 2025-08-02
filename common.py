@@ -7,16 +7,24 @@ getcontext().prec = 28
 # Constants
 SSS_PLUS_THRESHOLD = Decimal("100.5")
 SSS_PLUS_FACTOR = Decimal("0.224")
+SSS_PRO_THRESHOLD = Decimal("100.4999")
+SSS_PRO_FACTOR = Decimal("0.222")
 SSS_THRESHOLD = Decimal("100.0")
 SSS_FACTOR = Decimal("0.216")
+SS_PLUS_PRO_THRESHOLD = Decimal("99.9999")
+SS_PLUS_PRO_FACTOR = Decimal("0.214")
 SS_PLUS_THRESHOLD = Decimal("99.5")
 SS_PLUS_FACTOR = Decimal("0.211")
 SS_THRESHOLD = Decimal("99.0")
 SS_FACTOR = Decimal("0.208")
+S_PLUS_PRO_THRESHOLD = Decimal("98.9999")
+S_PLUS_PRO_FACTOR = Decimal("0.206")
 S_PLUS_THRESHOLD = Decimal("98.0")
 S_PLUS_FACTOR = Decimal("0.203")
 S_THRESHOLD = Decimal("97.0")
 S_FACTOR = Decimal("0.2")
+AAA_PRO_THRESHOLD = Decimal("96.9999")
+AAA_PRO_FACTOR = Decimal("0.176")
 AAA_THRESHOLD = Decimal("94.0")
 AAA_FACTOR = Decimal("0.168")
 AA_THRESHOLD = Decimal("90.0")
@@ -32,16 +40,24 @@ def dx_rating(difficulty: Decimal, achievement: int) -> int:
     if ach >= SSS_PLUS_THRESHOLD:
         factor = SSS_PLUS_FACTOR
         ach = Decimal("100.5")
+    elif ach >= SSS_PRO_THRESHOLD:
+        factor = SSS_PRO_FACTOR
     elif ach >= SSS_THRESHOLD:
         factor = SSS_FACTOR
+    elif ach >= SS_PLUS_PRO_THRESHOLD:
+        factor = SS_PLUS_PRO_FACTOR
     elif ach >= SS_PLUS_THRESHOLD:
         factor = SS_PLUS_FACTOR
     elif ach >= SS_THRESHOLD:
         factor = SS_FACTOR
+    elif ach >= S_PLUS_PRO_THRESHOLD:
+        factor = S_PLUS_PRO_FACTOR
     elif ach >= S_PLUS_THRESHOLD:
         factor = S_PLUS_FACTOR
     elif ach >= S_THRESHOLD:
         factor = S_FACTOR
+    elif ach >= AAA_PRO_THRESHOLD:
+        factor = AAA_PRO_FACTOR
     elif ach >= AAA_THRESHOLD:
         factor = AAA_FACTOR
     elif ach >= AA_THRESHOLD:
@@ -57,12 +73,16 @@ def dx_rating(difficulty: Decimal, achievement: int) -> int:
 # Define ranks
 ranks = [
     {"name": "SSS+", "min_ach": 1005000, "max_ach": 1010000},
-    {"name": "SSS", "min_ach": 1000000, "max_ach": 1004999},
-    {"name": "SS+", "min_ach": 995000, "max_ach": 999999},
+    {"name": "SSS*", "min_ach": 1004999, "max_ach": 1004999},
+    {"name": "SSS", "min_ach": 1000000, "max_ach": 1004998},
+    {"name": "SS+*", "min_ach": 999999, "max_ach": 999999},
+    {"name": "SS+", "min_ach": 995000, "max_ach": 999998},
     {"name": "SS", "min_ach": 990000, "max_ach": 994999},
-    {"name": "S+", "min_ach": 980000, "max_ach": 989999},
+    {"name": "S+*", "min_ach": 989999, "max_ach": 989999},
+    {"name": "S+", "min_ach": 980000, "max_ach": 989998},
     {"name": "S", "min_ach": 970000, "max_ach": 979999},
-    {"name": "AAA", "min_ach": 940000, "max_ach": 969999},
+    {"name": "AAA*", "min_ach": 969999, "max_ach": 969999},
+    {"name": "AAA", "min_ach": 940000, "max_ach": 969998},
     {"name": "AA", "min_ach": 900000, "max_ach": 939999},
     {"name": "A", "min_ach": 800000, "max_ach": 899999},
 ]
