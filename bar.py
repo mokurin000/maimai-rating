@@ -28,7 +28,7 @@ A_FACTOR = Decimal("0.136")
 
 def dx_rating(difficulty: Decimal, achievement: int) -> int:
     ach = Decimal(achievement) / Decimal("10000")
-    if ach >= Decimal("101.0") or ach < A_THRESHOLD:
+    if ach > Decimal("101.0") or ach < A_THRESHOLD:
         return 0
     if ach >= SSS_PLUS_THRESHOLD:
         factor = SSS_PLUS_FACTOR
@@ -56,7 +56,7 @@ def dx_rating(difficulty: Decimal, achievement: int) -> int:
 
 # Define ranks
 ranks = [
-    {"name": "SSS+", "min_ach": 1005000, "max_ach": 1009999},
+    {"name": "SSS+", "min_ach": 1005000, "max_ach": 1010000},
     {"name": "SSS", "min_ach": 1000000, "max_ach": 1004999},
     {"name": "SS+", "min_ach": 995000, "max_ach": 999999},
     {"name": "SS", "min_ach": 990000, "max_ach": 994999},
