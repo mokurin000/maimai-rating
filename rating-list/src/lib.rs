@@ -15,7 +15,7 @@ pub fn get_rating(target_rating: u32) -> Vec<(&'static str, Decimal, i32)> {
     for (rank, current_ach, _) in RANKS {
         let current_ach: RangeInclusive<i32> = current_ach.into();
 
-        for difficulty_rank in (10..160).map(|num| Decimal::new(num, 1)) {
+        for difficulty_rank in (10..=150).map(|num| Decimal::new(num, 1)) {
             let (_, rating) = dx_rating(difficulty_rank, current_ach.end);
             if rating < target_rating {
                 continue;
