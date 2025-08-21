@@ -12,6 +12,10 @@ pl.read_csv(
     },
 ).with_columns(
     pl.col("difficulty").cast(pl.Float64),
+).filter(
+    pl.lit("ABS").str.contains(
+        pl.col("rank").str.head(1),
+    )
 ).plot.scatter(
     x="difficulty",
     y="target_rating",
