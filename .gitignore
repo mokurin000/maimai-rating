@@ -9,5 +9,5 @@ wheels/
 # Virtual environments
 .venv
 
-/rating_table.csv
+/rating_table*.csv
 /rating*.html
