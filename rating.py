@@ -37,6 +37,8 @@ def draw_chart(csv_file: str, html_file: str, filter: str = "ABS"):
 
 
 draw_chart("rating_table.csv", "rating.html", "ABCDS")
-draw_chart("rating_table_2.csv", "rating-step2.html", "ABCDS")
 draw_chart("rating_table_simple.csv", "rating-simplified.html", "AS")
+draw_chart("rating_table_1.csv", "rating-step1.html", "ABCDS")
+draw_chart("rating_table_simple_1.csv", "rating-simplified-step1.html", "AS")
+draw_chart("rating_table_2.csv", "rating-step2.html", "ABCDS")
 draw_chart("rating_table_simple_2.csv", "rating-simplified-step2.html", "AS")
