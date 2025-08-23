@@ -3,7 +3,7 @@ import polars as pl
 pl.Config.set_tbl_rows(-1)
 
 
-def draw_chart(csv_file: str, html_file: str):
+def draw_chart(csv_file: str, html_file: str, filter: str = "ABS"):
     df = (
         pl.scan_csv(
             csv_file,
@@ -18,7 +18,7 @@ def draw_chart(csv_file: str, html_file: str):
             pl.col("difficulty").cast(pl.Float64),
         )
         .filter(
-            pl.lit("ABS").str.contains(
+            pl.lit(filter).str.contains(
                 pl.col("rank").str.head(1),
             )
         )
@@ -36,5 +36,5 @@ def draw_chart(csv_file: str, html_file: str):
     ).save(html_file)
 
 
-draw_chart("rating_table.csv", "rating.html")
-draw_chart("rating_table_simple.csv", "rating-simplified.html")
+draw_chart("rating_table.csv", "rating.html", "ABCDS")
+draw_chart("rating_table_simple.csv", "rating-simplified.html", "AS")
