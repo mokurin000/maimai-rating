@@ -10,4 +10,4 @@ wheels/
 .venv
 
 /rating_table*.csv
-/rating*.html
+/rating*html
