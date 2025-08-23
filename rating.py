@@ -22,6 +22,13 @@ def draw_chart(csv_file: str, html_file: str, filter: str = "ABS"):
                 pl.col("rank").str.head(1),
             )
         )
+        .unique(
+            subset=[
+                pl.col("difficulty"),
+                pl.col("achievement"),
+            ],
+            keep="last",
+        )
         .collect()
     )
 
